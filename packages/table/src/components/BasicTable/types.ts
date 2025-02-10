@@ -5,16 +5,16 @@ import type { ColumnType } from 'ant-design-vue/es/table'
 import type { VNode } from 'vue'
 import type { JSX } from 'vue/jsx-runtime'
 
-export interface IPagination {
-  pageSize: number // 页大小
-  currentPage: number // 当前页码
-}
+// export interface IPagination {
+//   pageSize: number // 页大小
+//   currentPage: number // 当前页码
+// }
 export interface BasicTableProps {
   title: string
   pagination: PaginationProps
   columns: ColumnType[]
   request: (
-    pagination: IPagination,
+    pagination: PaginationProps,
   ) => Promise<unknown>
   loading?: boolean
   polling?: boolean

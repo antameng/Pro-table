@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import type { PaginationProps } from 'ant-design-vue'
-import type { BasicTableProps, IPagination } from './types'
+import type { BasicTableProps } from './types'
 import { Table as AntTable } from 'ant-design-vue'
 import { isNil } from 'lodash-es'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<BasicTableProps>(), {
 const loading = ref<boolean>(false)
 const isLoading = computed(() => props.loading ?? loading.value)
 const dataSource = ref<any[]>([])
-async function request(pagination: IPagination) {
+async function request(pagination: PaginationProps) {
   try {
     loading.value = true
     dataSource.value = await props.request(pagination) as any
