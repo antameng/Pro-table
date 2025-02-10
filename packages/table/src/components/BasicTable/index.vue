@@ -30,7 +30,7 @@ onMounted(() => {
   const { current, pageSize } = props.pagination || {}
   request({
     pageSize: pageSize || 10,
-    currentPage: current || 1,
+    current: current || 1,
   })
   if (props.polling) {
     timer = setInterval(() => {
@@ -47,12 +47,12 @@ function reload() {
   const { current, pageSize } = props.pagination || {}
   request({
     pageSize: pageSize || 10,
-    currentPage: current || 1,
+    current: current || 1,
   })
 }
 function handleChange(pagination: PaginationProps) {
   const { current, pageSize } = pagination
-  request({ pageSize: pageSize || 10, currentPage: current || 1 })
+  request({ pageSize: pageSize || 10, current: current || 1 })
 }
 defineExpose({
   reload,
