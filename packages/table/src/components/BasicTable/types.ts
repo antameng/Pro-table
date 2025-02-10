@@ -5,11 +5,20 @@ import type { ColumnType } from 'ant-design-vue/es/table'
 import type { VNode } from 'vue'
 import type { JSX } from 'vue/jsx-runtime'
 
-export interface BasicTableProps<T = unknown> {
+export interface IPagination {
+  pageSize: number // 页大小
+  currentPage: number // 当前页码
+}
+export interface BasicTableProps {
   title: string
   pagination: PaginationProps
   columns: ColumnType[]
-  request: (params: unknown, sort: unknown, filter: unknown) => Promise<unknown>
+  request: (
+    pagination: IPagination,
+  ) => Promise<unknown>
+  loading?: boolean
+  polling?: boolean
+  pollingInterval?: number // 轮询的间隔
   toolbarRender?: () => VNode | JSX.Element | false // 工具插槽
   filtersRender?: () => VNode | JSX.Element | false // 过滤插槽
   tableAreaRender?: () => VNode | JSX.Element | false // 表格区域插槽

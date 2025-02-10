@@ -3,24 +3,27 @@ import { AmTable } from './../packages/table/index'
 
 const columns = [
   {
-    title: '角色',
-    dataIndex: 'username',
+    title: '基地编码',
+    dataIndex: 'comp',
   },
   {
-    title: '姓名',
-    dataIndex: 'username',
+    title: '公司',
+    dataIndex: 'dsca',
   },
   {
-    title: '年龄',
-    dataIndex: 'username',
+    title: '域',
+    dataIndex: 'ctyp',
   },
 ]
 const pagination = {
   pageSize: 10,
   showSizeChanger: true,
+  current: 1,
 }
 async function request(params: any) {
-  console.log(params)
+  const res = await fetch('https://sysapp.gree.com/GREESCMCloud/api/comp/list')
+  const res1 = await res.json()
+  return res1.compList
 }
 </script>
 
