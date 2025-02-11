@@ -2,7 +2,8 @@ import Antd from 'ant-design-vue'
 import { createApp } from 'vue'
 import App from './App.vue'
 import 'ant-design-vue/dist/reset.css'
+import 'virtual:uno.css'
 
 const app = createApp(App)
-app.mount('#app')
 app.use(Antd)
+app.mount('#app')

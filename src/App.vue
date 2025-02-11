@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { AmTable } from './../packages/table/index'
 
+const testTable = ref()
 const columns = [
   {
     title: '基地编码',
@@ -29,7 +31,19 @@ async function request(params: any) {
 
 <template>
   <div>
-    <AmTable title="学生信息" :columns="columns" :request="request" :pagination="pagination" />
+    <AmTable ref="testTable" title="学生信息" :columns="columns" :request="request" :pagination="pagination">
+      <template #actions>
+        <a-button type="primary" @click="() => testTable.reload()">
+          刷新1
+        </a-button>
+        <a-button type="primary" @click="() => testTable.reload()">
+          刷新2
+        </a-button>
+        <a-button type="primary" @click="() => testTable.reload()">
+          刷新3
+        </a-button>
+      </template>
+    </AmTable>
   </div>
 </template>
 
