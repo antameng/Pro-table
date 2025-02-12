@@ -114,7 +114,13 @@ defineExpose({
         :row-key="(record) => record.id"
         :request="request"
         @change="handleChange"
-      />
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column?.type">
+            123
+          </template>
+        </template>
+      </AntTable>
       <slot name="pagination" />
     </slot>
   </div>
