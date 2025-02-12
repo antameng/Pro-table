@@ -1,8 +1,10 @@
 <script setup lang="tsx">
 import type { PaginationProps } from 'ant-design-vue'
+import type { ColumnType } from 'ant-design-vue/es/table'
 import type { BasicTableProps } from './types'
-import { Table as AntTable } from 'ant-design-vue'
-import { isArray, isNil } from 'lodash-es'
+import { MenuOutlined } from '@ant-design/icons-vue'
+import { Button as AntButton, Dropdown as AntDropDown, Menu as AntMenu, MenuItem as AntMenuItem, Popconfirm as AntPopConfirm, Table as AntTable } from 'ant-design-vue'
+import { isArray, isNil, omit } from 'lodash-es'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 defineOptions({
@@ -11,6 +13,11 @@ defineOptions({
 const props = withDefaults(defineProps<BasicTableProps>(), {
   columns: () => [],
   request: () => Promise.resolve({}),
+})
+const columnsArr = computed(() => {
+  return props.columns.map((item) => {
+    return omit(item, ['isShow', 'value', 'helpMsg', 'type']) as ColumnType
+  })
 })
 const loading = ref<boolean>(false)
 const isLoading = computed(() => props.loading ?? loading.value)
@@ -63,16 +70,44 @@ defineExpose({
           <!-- <slot name="toolbar-right" /> -->
           <!-- TODO:actions -->
           <template v-for="(action, index) in actions" :key="index">
-            <a-button v-if="!isArray(action)" :disabled="action.disabled" :type="action.type ?? 'default'" @click="action.onClick">
-              {{ action.label }}
-            </a-button>
+            <template v-if="isArray(action)">
+              <AntDropDown>
+                <MenuOutlined />
+                <template #overlay>
+                  <AntMenu>
+                    <AntMenuItem v-for="(item, i) in action" :key="i" @click="item.onClick">
+                      {{ item.label }}
+                    </AntMenuItem>
+                  </AntMenu>
+                </template>
+              </AntDropDown>
+            </template>
+            <template v-else>
+              <!--    如果配置了popConfirm     -->
+              <AntPopConfirm
+                v-if="!isNil(action?.popConfirm)"
+                :title="action.popConfirm?.title"
+                :on-confirm="action.popConfirm?.onConfirm"
+                :ok-text="action.popConfirm?.confirmText"
+                :cancel-text="action.popConfirm?.cancelText"
+                @confirm="action.popConfirm?.onConfirm"
+                @cancel="action.popConfirm?.onCancel"
+              >
+                <AntButton :disabled="action.disabled" :type="action.type ?? 'default'" @click="action.onClick">
+                  {{ action.label }}
+                </AntButton>
+              </AntPopConfirm>
+              <AntButton v-else :disabled="action.disabled" :type="action.type ?? 'default'" @click="action.onClick">
+                {{ action.label }}
+              </AntButton>
+            </template>
           </template>
         </slot>
       </div>
     </slot>
     <slot name="table-area">
       <AntTable
-        :columns="columns"
+        :columns="columnsArr"
         :data-source="dataSource"
         :pagination="!isNil($slots.pagination) ? false : pagination"
         :loading="isLoading"
